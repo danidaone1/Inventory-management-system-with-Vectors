@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+
+struct Product {
+    int id;
+    string name;
+    double price;
+};
+
+
+void addProduct(vector<Product>& inventory, int id, const string& name, double price) {
+    
+    for (const Product& p : inventory) {
+        if (p.id == id) {
+            cout << "Product with ID " << id << " already exists in the inventory." << endl;
+            return;
+        }
+    }
+
+    
+    Product newProduct = {id, name, price};
+    inventory.push_back(newProduct);
+
+    cout << "Product added to the inventory successfully." << endl;
+}
+
+
+void removeProduct(vector<Product>& inventory, int id) {
+    
+    auto it = find_if(inventory.begin(), inventory.end(), [id](const Product& p) {
+        return p.id == id;
+    });
+
+   
+    if (it != inventory.end()) {
+        // Remove the product from the inventory
+        inventory.erase(it);
+        cout << "Product with ID " << id << " removed from the inventory." << endl;
+    } else {
+        cout << "Product with ID " << id << " not found in the inventory." << endl;
+    }
+}
+
+
+void displayInventory(const vector<Product>& inventory) {
+    cout << "Current Inventory:" << endl;
+    for (const Product& p : inventory) {
+        cout << "ID: " << p.id << ", Name: " << p.name << ", Price: $" << p.price << endl;
+    }
+}
+
+int main() {
+    
+    vector<Product> inventory;
+
+    
+    addProduct(inventory, 1, "Laptop", 999.99);
+    addProduct(inventory, 2, "Smartphone", 499.99);
+
+    
+    displayInventory(inventory);
+
+    
+    addProduct(inventory, 3, "Tablet", 299.99);
+
+    
+    removeProduct(inventory, 2);
+
+    
+    displayInventory(inventory);
+
+    return 0;
+}
